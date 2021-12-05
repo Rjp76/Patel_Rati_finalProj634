@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Wine Quality (Red) Data set from https://archive.ics.uci.edu/ml/datasets/wine+quality
-# 
-# We're looking for Wine Quality here
+# Rati Patel
+# CS634
+# Prof Abduallah
+# December 4, 2021
 
-# In[19]:
+# In[1]:
 
 
 import pandas as pd
@@ -21,27 +22,27 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 
-# In[20]:
+# In[2]:
 
 
 winedf = pd.read_csv('winequality-red.csv',sep=";")
 winedf.head()
 
 
-# In[21]:
+# In[3]:
 
 
 winedf.info()
 
 
-# In[22]:
+# In[4]:
 
 
 #no null values found in dataframe
 winedf.isnull().values.all()
 
 
-# In[23]:
+# In[5]:
 
 
 def calc(labs, pred):
@@ -67,7 +68,7 @@ def calc(labs, pred):
     return indval
 
 
-# In[24]:
+# In[6]:
 
 
 def aveCalc(df):
@@ -78,30 +79,14 @@ def aveCalc(df):
     return rst
 
 
-# In[25]:
+# In[7]:
 
 
 X= winedf.drop('quality', axis=1)
 y = winedf['quality']
 
 
-# # Random Forest & SVM
-
-# In[26]:
-
-
-from sklearn.ensemble import RandomForestClassifier
-classifier = RandomForestClassifier(n_estimators=50, random_state=8)
-
-
-# In[27]:
-
-
-from sklearn.svm import SVC
-model_svm = SVC()
-
-
-# In[28]:
+# In[8]:
 
 
 k = 10
@@ -114,7 +99,23 @@ svm_df = pd.DataFrame(index=ind)
 gru_df = pd.DataFrame(index=ind)
 
 
-# In[29]:
+# # Random Forest & SVM
+
+# In[9]:
+
+
+from sklearn.ensemble import RandomForestClassifier
+classifier = RandomForestClassifier(n_estimators=50, random_state=8)
+
+
+# In[10]:
+
+
+from sklearn.svm import SVC
+model_svm = SVC()
+
+
+# In[11]:
 
 
 fc = 0
@@ -146,7 +147,7 @@ svm_df['Average']=aveCalc(svm_df)
 
 # ## Random Forest Results
 
-# In[30]:
+# In[12]:
 
 
 rf_df
@@ -154,7 +155,7 @@ rf_df
 
 # # SVM Results
 
-# In[31]:
+# In[13]:
 
 
 svm_df
@@ -162,7 +163,7 @@ svm_df
 
 # # LSTM
 
-# In[32]:
+# In[14]:
 
 
 from sklearn.preprocessing import MinMaxScaler
@@ -171,19 +172,7 @@ from keras.layers import Dense, LSTM
 from keras import metrics 
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[42]:
+# In[15]:
 
 
 lstm_mod = Sequential()
@@ -200,7 +189,7 @@ lstm_mod.compile(loss ='binary_crossentropy',
   optimizer ='adamax', metrics = [metrics.categorical_accuracy])
 
 
-# In[43]:
+# In[16]:
 
 
 for train_ind , test_ind in kf.split(X):
@@ -211,18 +200,6 @@ for train_ind , test_ind in kf.split(X):
     lstm_mod.fit(X_train, y_train, epochs = 3,batch_size = 32, verbose = 1,validation_split=0)
     y_pred = lstm_mod.predict(X_test)
     print(y_pred)
-
-
-# In[15]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
